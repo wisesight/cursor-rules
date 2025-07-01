@@ -1,0 +1,67 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Project Architecture
+
+This project follows a modular, library-based architecture to promote a strong separation of concerns, reusability, and maintainability.
+
+## Directory Structure
+
+The project layout is organized as follows:
+```
+├── cmd/
+│   ├── api/
+│   │   ├── internal/
+│   │   │   └── usecases/
+│   │   └── main.go
+│   ├── notification-publisher/
+│   │   └── main.go
+│   └── notification-worker/
+│       └── main.go
+└── internal/
+└── todo/
+├── models.go
+├── service.go
+├── repo.go
+└── errors.go
+```
+
+* **`cmd/`**: Contains the entry points for all runnable applications.
+    * Each subdirectory within `cmd/` (e.g., `api`, `notification-worker`) represents a distinct service or process with its own `main.go` file.
+    * Code that is **not reusable** and specific only to a single application should be placed in an `internal` directory within that application's subdirectory (e.g., `cmd/api/internal`).
+    * Each subdirectory within `cmd/` must have their own `config.go` for reading environment variable of each process
+
+* **`internal/`**: Contains shared packages and domain logic designed to be reused across different applications within the project. This is the core of our library-based architecture.
+
+## Library-Based Architecture
+
+The core design philosophy is to treat each business domain as a self-contained "library" located in the root `internal/` directory.
+
+For example, all logic for managing "Todos" is encapsulated within the `internal/todo` library. This library is then consumed by various applications as needed.
+
+### Anatomy of a Library (`internal/todo`)
+
+Each library is composed of several standard components:
+
+* **`models`**: Contains type declarations and domain objects (e.g., `Todo` struct).The code in model must not have dependency to any database, storage or external services.for example each fields type must be primative type only do not use any databases type such as primative.ObjectId
+* **`service`**: Provides the primary exportable business logic and orchestration for the domain. This is the main public API of the library.
+* **`repo`**: Defines the interfaces for any required storage, database, or external service dependencies (e.g., `TodoRepository` interface). This follows the dependency inversion principle. The code in repo must not have dependency to any database, storage or external services. for example each fields type must be primative type only do not use any databases type such as primative.ObjectId
+* **`errors`**: Declares custom, domain-specific errors that the service layer can return, allowing consumers to handle failures gracefully.
+* ** <database_name> ** is implementation of repository of each database
+
+### Application Use Cases
+
+The specific business logic for an application lives within its `usecases` package (e.g., `cmd/api/internal/usecases`).
+
+A use case is responsible for orchestrating calls to one or more internal libraries to perform a specific task. For example, a `CreateTodo` use case in the API would call the `todo.Service` to handle the actual creation and persistence of the todo item. This keeps the application-specific logic separate from the core domain logic.
+
+### HTTP API Pattern
+- Using RPC naming pattern for example "POST create-todo", "POST delete-todo-by-id" for easy to understand
+- Only use POST method of all routes
+- Do not use url param or query string get it on body only
+
+### Unit Test
+- *Sperated test package*
+- *Always add uni test to all files and functions*

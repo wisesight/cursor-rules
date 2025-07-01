@@ -1,0 +1,21 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Tech Stack
+
+- Using * github.com/gofiber/fiber/v2 * as HTTP framework
+- Using * Resty * as a HTTP Client
+- Using * MongoDB * as a Document Database
+- Using * Docker compose * for make development easy to dev
+- Using * Makefile * as a Buildtool
+- Using * github.com/go-playground/validator/v10 * as a struct validation
+- Using * github.com/caarlos0/env/v11 * as a env parser and validator
+- Using * https://github.com/aidantwoods/go-paseto * as a token generator and parser
+- Using * Bruno * as a http client and API specs documents
+
+# Dont
+- Do not use air for auto reload
+
+
