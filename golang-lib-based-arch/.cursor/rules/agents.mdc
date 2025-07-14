@@ -16,18 +16,179 @@ You operate under these guiding principles:
 
 # Standard Operating Procedure
 Before writing code, you will:
-1.  **Consult Project Artifacts:** Review all relevant documents, notes, and architectural designs located in the `.ai/` directory at the project root to fully understand the context and requirements.
-2.  **Plan Your Approach:** Formulate a clear plan, design, or checklist. You will document your thought process, architectural decisions, and notes, saving these artifacts in the `.ai/` directory.
+1.  **Consult Project Artifacts:** REVIEW all relevant documents, notes, and architectural designs located in the `.ai/` directory at the project root to fully understand the context and requirements.
+2.  **Plan Your Approach:** ** ALWAYS CREATE AND UPDATE ** a clear plan, design, or checklist. You will document your thought process, architectural decisions, and notes, saving these artifacts in the `.ai/` directory.
 
 # When generating code, you will:
 1.  **Prioritize Testability:** Write robust unit tests for all new functionality to ensure correctness and prevent regressions.
 2.  **Ensure Code Quality:** Perform static analysis and check for type errors across all relevant files to maintain a healthy codebase.
 3.  ** Do not update go.mod directly ** use `go get ` command instead for safty concern
 
-# Developments
-1. Always make development environment easy to develop by updateing `Readme.md` in root directory
+# **CRITICAL: API Documentation with Bruno**
+** MANDATORY RULE: ANY change that affects the API MUST update Bruno documentation **
+
+## Bruno Update Requirements
+When you make ANY of the following changes, you MUST update the Bruno collection:
+
+### 1. New API Endpoints
+- Create new `.bru` files in appropriate folders (`auth/`, `projects/`, `scraping/`, etc.)
+- Include complete request/response examples
+- Add comprehensive documentation in `docs` section
+- Write automated tests in `tests` section
+- Update `bruno/README.md` with new endpoint information
+
+### 2. Modified API Endpoints
+- Update existing `.bru` files with new request/response formats
+- Modify documentation to reflect changes
+- Update tests to validate new behavior
+- Add migration notes if breaking changes
+
+### 3. New Request/Response Fields
+- Update request body examples with new fields
+- Document field validation rules and constraints
+- Update response examples with new fields
+- Add field descriptions in documentation
+
+### 4. Authentication Changes
+- Update auth headers and token handling
+- Modify authentication flow documentation
+- Update environment variables if needed
+- Test authentication in Bruno collection
+
+### 5. Error Response Changes
+- Update error response examples
+- Document new error codes and messages
+- Test error scenarios in Bruno
+
+## Bruno File Structure Rules
+```
+bruno/
+├── environments/          # Environment configurations
+├── auth/                  # Authentication endpoints
+├── projects/              # Project management endpoints
+├── scraping/             # Web scraping endpoints
+├── webhooks/             # Webhook management endpoints
+├── monitoring/           # Monitoring and alerting endpoints
+└── shared/               # Shared utilities and examples
+```
+
+## Bruno Documentation Standards
+Each `.bru` file MUST include:
+
+1. **Complete Meta Information**
+   ```
+   meta {
+     name: Clear Endpoint Name
+     type: http
+     seq: Sequential Number
+   }
+   ```
+
+2. **Full Request Configuration**
+   ```
+   post {
+     url: {{api_url}}/endpoint
+     body: json
+     auth: bearer
+   }
+   ```
+
+3. **Comprehensive Documentation**
+   ```
+   docs {
+     # Endpoint Name
+     
+     Brief description of what the endpoint does.
+     
+     ## Request Body
+     - Field descriptions with types and constraints
+     
+     ## Response
+     - Success and error response examples
+     - Status codes and their meanings
+   }
+   ```
+
+4. **Automated Tests**
+   ```
+   tests {
+     test("validates response structure", function() {
+       expect(res.getStatus()).to.equal(200);
+       expect(res.getBody()).to.have.property('expected_field');
+     });
+   }
+   ```
+
+## Bruno Update Workflow
+1. **Before implementing API changes**: Plan Bruno updates in `.ai/plans/`
+2. **During development**: Create/update `.bru` files alongside code changes
+3. **After implementation**: Test all Bruno requests work correctly
+4. **Before PR**: Verify Bruno collection is complete and up-to-date
+
+# Mandatory .ai Directory Management
+** CRITICAL: You MUST ALWAYS create and maintain artifacts in the `.ai/` directory for every development task **
+
+## Required .ai Directory Structure
+```
+.ai/
+├── architecture/          # Architecture Decision Records (ADRs)
+│   ├── *.md              # Document all architectural decisions
+│   └── system-design.md  # Overall system design
+├── plans/                # Development plans and workflows  
+│   ├── *.md              # Task-specific plans
+│   └── development-workflow.md # Standard workflow
+├── notes/                # Development notes and learnings
+│   ├── *.md              # Session notes, insights, issues
+│   └── troubleshooting.md # Common problems and solutions
+└── decisions/            # Technical decisions and rationale
+    └── *.md              # Decision records with context
+```
+
+## Artifact Creation Rules
+1. **Before ANY code changes**: Create/update planning document in `.ai/plans/`
+2. **For architectural changes**: Document in `.ai/architecture/` with:
+   - Context and problem statement
+   - Decision made and rationale
+   - Implementation approach
+   - Impact assessment
+3. **During development**: Maintain notes in `.ai/notes/` about:
+   - Challenges encountered
+   - Solutions implemented  
+   - Lessons learned
+   - Future considerations
+4. **After completion**: Update relevant artifacts with outcomes and learnings
+
+## Document Standards
+- Use clear, descriptive filenames with dates
+- Include status (Draft, Active, Completed, Deprecated)
+- Cross-reference related documents
+- Maintain version history in git
+- Use markdown format for consistency
+
+# Development Requirements
+1. Always make development environment easy to develop by updating `README.md` in root directory
 2. Always update docker-compose.yaml to make dev env easy to dev
-3. Always update `bruno/` directory that consist API specs
+3. **MANDATORY: Always update `bruno/` directory when ANY API change is made**
 4. Always add test to all files 
 5. Add or Update `.vscode` for make our developer can use debugger 
 6. Always add or update `.env.local` for development easily
+7. **MANDATORY: Create/update artifacts in `.ai/` directory for every task**
+8. **Document all architectural decisions in `.ai/architecture/`**
+9. **Maintain development plans in `.ai/plans/`**
+10. **Keep session notes and learnings in `.ai/notes/`**
+11. **CRITICAL: Update Bruno API documentation for ANY API-related changes**
+
+# API Development Checklist
+For EVERY API-related task, you MUST:
+
+- [ ] Plan Bruno documentation updates in `.ai/plans/`
+- [ ] Create/update `.bru` files for affected endpoints
+- [ ] Include complete request/response examples
+- [ ] Write comprehensive documentation in `docs` sections
+- [ ] Add automated tests in `tests` sections
+- [ ] Update environment variables if needed
+- [ ] Test all Bruno requests work correctly
+- [ ] Update `bruno/README.md` if new endpoints added
+- [ ] Verify Bruno collection is complete before task completion
+
+** FAILURE TO UPDATE BRUNO DOCUMENTATION IS CONSIDERED INCOMPLETE WORK **
