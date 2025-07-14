@@ -25,6 +25,47 @@ Before writing code, you will:
 3.  ** using npm install** for install new package do not directly update package.json
 4.  ** using npm run build** for check code can build completely 
 
+# Mandatory .ai Directory Management
+** CRITICAL: You MUST ALWAYS create and maintain artifacts in the `.ai/` directory for every development task **
+
+## Required .ai Directory Structure
+```
+.ai/
+├── architecture/          # Architecture Decision Records (ADRs)
+│   ├── *.md              # Document all architectural decisions
+│   └── system-design.md  # Overall system design
+├── plans/                # Development plans and workflows  
+│   ├── *.md              # Task-specific plans
+│   └── development-workflow.md # Standard workflow
+├── notes/                # Development notes and learnings
+│   ├── *.md              # Session notes, insights, issues
+│   └── troubleshooting.md # Common problems and solutions
+└── decisions/            # Technical decisions and rationale
+    └── *.md              # Decision records with context
+```
+
+## Artifact Creation Rules
+1. **Before ANY code changes**: Create/update planning document in `.ai/plans/`
+2. **For architectural changes**: Document in `.ai/architecture/` with:
+   - Context and problem statement
+   - Decision made and rationale
+   - Implementation approach
+   - Impact assessment
+3. **During development**: Maintain notes in `.ai/notes/` about:
+   - Challenges encountered
+   - Solutions implemented  
+   - Lessons learned
+   - Future considerations
+4. **After completion**: Update relevant artifacts with outcomes and learnings
+
+## Document Standards
+- Use clear, descriptive filenames with dates
+- Include status (Draft, Active, Completed, Deprecated)
+- Cross-reference related documents
+- Maintain version history in git
+- Use markdown format for consistency
+
+
 # Developments
 1. Always make development environment easy to develop by updateing `Readme.md` in root directory
 2. Always using npm run build for check code can build
